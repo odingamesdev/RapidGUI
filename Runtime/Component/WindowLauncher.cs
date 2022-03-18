@@ -18,6 +18,7 @@ namespace RapidGUI
 
         public bool isEnable => funcDatas.Any(data => data.checkEnableFunc?.Invoke() ?? true);
 
+        private Vector2 _scrollPosition;
 
         public WindowLauncher() : base() { }
 
@@ -90,11 +91,14 @@ namespace RapidGUI
                         {
                             CloseWindow();
                         }
-                        
+                        _scrollPosition = GUILayout.BeginScrollView(
+                            _scrollPosition, GUILayout.Width(500), GUILayout.Height(400));
+
                         foreach (var func in GetGUIFuncs())
                         {
                             func();
                         }
+                        GUILayout.EndScrollView();
                         GUI.DragWindow();
 
                         if (Event.current.type == EventType.Used)
@@ -102,7 +106,10 @@ namespace RapidGUI
                             WindowInvoker.SetFocusedWindow(this);
                         }
                     }
-                    , name, RGUIStyle.darkWindow);
+                    , name, 
+                    RGUIStyle.darkWindow, 
+                    GUILayout.MaxWidth(Mathf.Abs(Screen.width - pos.x)),
+                    GUILayout.MaxHeight(Mathf.Abs(Screen.height - pos.y)));
 
                 isMoved |= pos != rect.position;
             }
