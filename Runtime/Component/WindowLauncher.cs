@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.Animations;
 
 
 namespace RapidGUI
@@ -16,6 +15,9 @@ namespace RapidGUI
         public event Action<WindowLauncher> onOpen;
         public event Action<WindowLauncher> onClose;
 
+        public static Vector2 Scale;
+        public static Vector2 Pivot;
+        
         public bool isEnable => funcDatas.Any(data => data.checkEnableFunc?.Invoke() ?? true);
 
         private Vector2 _scrollPosition;
@@ -42,6 +44,7 @@ namespace RapidGUI
 
         public void DoGUI()
         {
+            GUIUtility.ScaleAroundPivot(Scale, Pivot);
             if (isEnable)
             {
                 bool changed;
@@ -84,6 +87,7 @@ namespace RapidGUI
                 rect = RGUI.ResizableWindow(GetHashCode(), rect,
                     (id) =>
                     {
+                        GUIUtility.ScaleAroundPivot(Scale, Pivot);
                         var buttonSize = new Vector2(40f, 15f);
                         var buttonPos = new Vector2(rect.size.x - buttonSize.x, 2f);
                         var buttonRect = new Rect(buttonPos, buttonSize);
@@ -91,14 +95,17 @@ namespace RapidGUI
                         {
                             CloseWindow();
                         }
-                        _scrollPosition = GUILayout.BeginScrollView(
-                            _scrollPosition, GUILayout.Width(500), GUILayout.Height(400));
 
-                        foreach (var func in GetGUIFuncs())
+                        using (var sc = new GUILayout.ScrollViewScope(_scrollPosition, GUILayout.Width(rect.width), GUILayout.Height(rect.height - 30),
+                            GUILayout.Height(rect.height)))
                         {
-                            func();
+                            _scrollPosition = sc.scrollPosition;
+                            foreach (var func in GetGUIFuncs())
+                            {
+                                func();
+                            }
                         }
-                        GUILayout.EndScrollView();
+
                         GUI.DragWindow();
 
                         if (Event.current.type == EventType.Used)
@@ -106,8 +113,10 @@ namespace RapidGUI
                             WindowInvoker.SetFocusedWindow(this);
                         }
                     }
-                    , name, 
-                    RGUIStyle.darkWindow, 
+                    , name,
+                    RGUIStyle.darkWindow,
+                    GUILayout.MinWidth(400),
+                    GUILayout.MinHeight(400),
                     GUILayout.MaxWidth(Mathf.Abs(Screen.width - pos.x)),
                     GUILayout.MaxHeight(Mathf.Abs(Screen.height - pos.y)));
 

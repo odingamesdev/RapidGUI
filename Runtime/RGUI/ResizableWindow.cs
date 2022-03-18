@@ -70,7 +70,10 @@ namespace RapidGUI
             protected Rect Do(int id, Rect rect, GUI.WindowFunction func, string text, GUIStyle style = null, params GUILayoutOption[] options)
             {
                 rect = ResizeRect(rect, detectionRange);
-                return GUILayout.Window(id, rect, func, text, CheckStyle(style), options);
+                rect.size *= WindowLauncher.Scale;
+                var tempRect = GUILayout.Window(id, rect, func, text, CheckStyle(style), options);
+                tempRect.size /= WindowLauncher.Scale;
+                return tempRect;
             }
 
 

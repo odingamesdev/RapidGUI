@@ -136,6 +136,7 @@ namespace RapidGUI
                 {
                     using (var sc = new GUILayout.ScrollViewScope(scrollPosition))
                     {
+                        GUIUtility.ScaleAroundPivot(WindowLauncher.Scale, WindowLauncher.Pivot);
                         scrollPosition = sc.scrollPosition;
 
                         for (var j = 0; j < displayOptions.Length; ++j)
