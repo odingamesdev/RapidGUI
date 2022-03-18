@@ -144,6 +144,7 @@ namespace RapidGUI
                 fiList = type
                     .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                     .Where(fi => !typeof(Delegate).IsAssignableFrom(fi.FieldType))
+                    .Where(fi => fi.GetCustomAttribute<RGUIIgnore>() == null)
                     .Where(fi => fi.IsPublic ? fi.GetCustomAttribute<NonSerializedAttribute>() == null : fi.GetCustomAttribute<SerializeField>() != null)
                     .ToList();
                 fieldInfoTable[type] = fiList;
