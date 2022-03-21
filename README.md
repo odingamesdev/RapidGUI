@@ -44,10 +44,10 @@ value = RGUI.Field(value, label);
 - Array/List has a right-click menu like inspector
 - Supports custom class
 
-**Serializing but ignoring in RGUI.Field
+**Serializing but ignoring in RGUI.Field**
 
 With this attribute you can serialize field by Unity to change some values from editor, but can hide this field in RGUI.Field for some reasons, for example, perfomance (Suitable for long List<T>'s)
-'''csharp
+```csharp
 public class GameConfig
 {
     public float unitSpeed;
@@ -55,7 +55,7 @@ public class GameConfig
     public List<UnitConfigInfo> unitConfigs;
 {
     
-'''
+```
 
 **CustomClass**
 
