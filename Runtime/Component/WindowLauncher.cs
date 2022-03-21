@@ -17,6 +17,8 @@ namespace RapidGUI
 
         public static Vector2 Scale;
         public static Vector2 Pivot;
+
+        public static Vector2 ScrollOffset;
         
         public bool isEnable => funcDatas.Any(data => data.checkEnableFunc?.Invoke() ?? true);
 
@@ -44,7 +46,7 @@ namespace RapidGUI
 
         public void DoGUI()
         {
-            GUIUtility.ScaleAroundPivot(Scale, Pivot);
+            //GUIUtility.ScaleAroundPivot(Scale, Pivot);
             if (isEnable)
             {
                 bool changed;
@@ -96,8 +98,7 @@ namespace RapidGUI
                             CloseWindow();
                         }
 
-                        using (var sc = new GUILayout.ScrollViewScope(_scrollPosition, GUILayout.Width(rect.width), GUILayout.Height(rect.height - 30),
-                            GUILayout.Height(rect.height)))
+                        using (var sc = new GUILayout.ScrollViewScope(_scrollPosition, GUILayout.Width(rect.width - ScrollOffset.x), GUILayout.Height(rect.height - ScrollOffset.y)))
                         {
                             _scrollPosition = sc.scrollPosition;
                             foreach (var func in GetGUIFuncs())

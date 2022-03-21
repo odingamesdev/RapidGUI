@@ -14,8 +14,8 @@ namespace RapidGUI
         {
             #region static
 
-            const int detectionRange = 8;
-            static readonly RectOffset overflow = new RectOffset(detectionRange, detectionRange, 0, detectionRange);
+            static int detectionRange = 8 * (int)WindowLauncher.Scale.magnitude;
+            static RectOffset overflow = new RectOffset(detectionRange, detectionRange, 0, detectionRange);
             static GUIStyle defaultStyle;
 
             static Dictionary<GUIStyle, GUIStyle> customStyleDic = new Dictionary<GUIStyle, GUIStyle>();

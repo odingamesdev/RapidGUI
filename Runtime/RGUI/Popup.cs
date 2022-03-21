@@ -128,7 +128,7 @@ namespace RapidGUI
 
             static readonly int PopupWindowId = "Popup".GetHashCode();
 
-            public Rect GetWindowRect() => new Rect(pos, size);
+            public Rect GetWindowRect() => new Rect(pos, size * WindowLauncher.Scale);
 
             public void DoGUIWindow()
             {
