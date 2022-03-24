@@ -90,7 +90,7 @@ namespace RapidGUI
                     (id) =>
                     {
                         GUIUtility.ScaleAroundPivot(Scale, Pivot);
-                        var buttonSize = new Vector2(40f, 15f);
+                        var buttonSize = new Vector2(40f, 15f) * Scale;
                         var buttonPos = new Vector2(rect.size.x - buttonSize.x, 2f);
                         var buttonRect = new Rect(buttonPos, buttonSize);
                         if (GUI.Button(buttonRect, "✕", RGUIStyle.flatButton))
@@ -98,7 +98,9 @@ namespace RapidGUI
                             CloseWindow();
                         }
 
-                        using (var sc = new GUILayout.ScrollViewScope(_scrollPosition, GUILayout.Width(rect.width - ScrollOffset.x), GUILayout.Height(rect.height - ScrollOffset.y)))
+                        using (var sc = new GUILayout.ScrollViewScope(_scrollPosition,
+                            GUILayout.Width(rect.width - ScrollOffset.x), 
+                            GUILayout.Height(rect.height - ScrollOffset.y)))
                         {
                             _scrollPosition = sc.scrollPosition;
                             foreach (var func in GetGUIFuncs())
